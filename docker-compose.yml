@@ -1,0 +1,28 @@
+services:
+  forjavtt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forjavtt
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/planarally/data
+      - ./assets:/planarally/static/assets
+      - ./mods:/planarally/static/mods
+    environment:
+      - PA_BASEPATH=/
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: forjavtt-ngrok
+    restart: unless-stopped
+    environment:
+      - NGROK_AUTHTOKEN=2aYbMngQc8bmzlUL7hbubwaNnKz_5Bx8tf5YjKwZuPPssVLqT
+    command:
+      - http
+      - forjavtt:8000
+    depends_on:
+      - forjavtt
