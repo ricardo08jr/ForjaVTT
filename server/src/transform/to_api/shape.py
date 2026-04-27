@@ -68,6 +68,7 @@ def transform_shape(shape: Shape, pr: PlayerRoom) -> ApiShapeSubType:
         trackers=trackers,
         auras=auras,
         character=shape.character_id,
+        vision_range=shape.vision_range,
         odd_hex_orientation=shape.odd_hex_orientation,
         size_x=shape.size_x,
         size_y=shape.size_y,

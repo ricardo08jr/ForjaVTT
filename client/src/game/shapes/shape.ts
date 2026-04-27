@@ -210,11 +210,13 @@ export abstract class Shape implements IShape {
         const visionIteration = visionState.getVisionIteration(this.floorId);
         const visionAltered = visionIteration !== this.visionIteration;
         if (this._visionPolygon === undefined || visionAltered) {
+            const props = getProperties(this.id)!;
             const { behindPatches, visibility } = computeVisibility(
                 this.center,
                 TriangulationTarget.VISION,
                 this.floorId,
                 false,
+                props.visionRange ? getUnitDistance(props.visionRange) : undefined,
             );
             this._visionPolygon = visibility;
             this.visionIteration = visionIteration;

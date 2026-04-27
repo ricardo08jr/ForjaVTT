@@ -253,6 +253,25 @@ async function changeAsset(): Promise<void> {
             />
         </div>
         <div class="row">
+            <label for="shapeselectiondialog-vision-range">
+                {{ t("game.ui.selection.edit_dialog.properties.vision_range") }}
+            </label>
+            <input
+                id="shapeselectiondialog-vision-range"
+                type="number"
+                :value="shapeProps.visionRange ?? ''"
+                :placeholder="t('game.ui.selection.edit_dialog.properties.vision_range_placeholder')"
+                :disabled="!owned"
+                @change="
+                    propertiesSystem.setVisionRange(
+                        selectedState.raw.focus!,
+                        $event.target.value === '' ? null : Number($event.target.value),
+                        SERVER_SYNC,
+                    )
+                "
+            />
+        </div>
+        <div class="row">
             <label for="shapeselectiondialog-is-locked">
                 {{ t("game.ui.selection.edit_dialog.dialog.is_locked") }}
             </label>

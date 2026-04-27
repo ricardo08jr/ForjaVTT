@@ -18,6 +18,7 @@ from ...models.shape.options import (
     ShapeSetBooleanValue,
     ShapeSetDoorToggleModeValue,
     ShapeSetIntegerValue,
+    ShapeSetNumberValue,
     ShapeSetOptionalStringValue,
     ShapeSetPermissionValue,
     ShapeSetStringValue,
@@ -283,6 +284,28 @@ async def set_vision_block(sid: str, raw_data: Any):
 
     await _send_game(
         "Shape.Options.VisionBlock.Set",
+        data,
+        skip_sid=sid,
+        room=pr.active_location.get_path(),
+    )
+
+
+@sio.on("Shape.Options.VisionRange.Set", namespace=GAME_NS)
+@auth.login_required(app, sio, "game")
+async def set_vision_range(sid: str, raw_data: Any):
+    data = ShapeSetNumberValue(**raw_data)
+
+    pr: PlayerRoom = game_state.get(sid)
+
+    shape = get_shape_or_none(pr, data.shape, "VisionRange.Set")
+    if shape is None:
+        return
+
+    shape.vision_range = data.value if data.value != -1 else None
+    shape.save()
+
+    await _send_game(
+        "Shape.Options.VisionRange.Set",
         data,
         skip_sid=sid,
         room=pr.active_location.get_path(),

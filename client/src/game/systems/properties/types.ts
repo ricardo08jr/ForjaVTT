@@ -20,6 +20,7 @@ export interface ShapeProperties {
     fillColour: string;
     blocksMovement: boolean;
     blocksVision: VisionBlock;
+    visionRange: number | null;
     showBadge: boolean;
     isDefeated: boolean;
     isLocked: boolean;
@@ -42,6 +43,7 @@ export interface ServerShapeProperties {
     fill_colour: string;
     movement_obstruction: boolean;
     vision_obstruction: VisionBlock;
+    vision_range: number | null;
     show_badge: boolean;
     is_defeated: boolean;
     is_locked: boolean;

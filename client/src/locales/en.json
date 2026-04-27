@@ -267,7 +267,9 @@
                             "no": "No",
                             "complete": "Complete",
                             "behind": "Behind"
-                        }
+                        },
+                        "vision_range": "Vision range (m)",
+                        "vision_range_placeholder": "Location default"
                     },
                     "groups": {
                         "groups": "Groups",

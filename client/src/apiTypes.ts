@@ -231,6 +231,7 @@ export interface ApiCoreShape {
   trackers: ApiTracker[];
   auras: ApiAura[];
   character: CharacterId | null;
+  vision_range: number | null;
   odd_hex_orientation: boolean;
   size_x: number;
   size_y: number;
@@ -802,6 +803,10 @@ export interface ShapeSetDoorToggleModeValue {
   value: "movement" | "vision" | "both";
 }
 export interface ShapeSetIntegerValue {
+  shape: GlobalId;
+  value: number;
+}
+export interface ShapeSetNumberValue {
   shape: GlobalId;
   value: number;
 }

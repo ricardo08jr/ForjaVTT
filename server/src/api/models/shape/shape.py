@@ -42,6 +42,7 @@ class ApiCoreShape(TypeIdModel):
     trackers: list[ApiTracker]
     auras: list[ApiAura]
     character: int | None = Field(json_schema_extra={"typeId": "CharacterId"})
+    vision_range: float | None
     odd_hex_orientation: bool
     size_x: int
     size_y: int

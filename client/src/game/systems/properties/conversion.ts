@@ -4,6 +4,7 @@ export function propertiesToServer(properties: ShapeProperties): ServerShapeProp
     return {
         movement_obstruction: properties.blocksMovement,
         vision_obstruction: properties.blocksVision,
+        vision_range: properties.visionRange,
         name: properties.name,
         name_visible: properties.nameVisible,
         is_invisible: properties.isInvisible,
@@ -26,6 +27,7 @@ export function propertiesFromServer(properties: ServerShapeProperties): ShapePr
     return {
         blocksMovement: properties.movement_obstruction,
         blocksVision: properties.vision_obstruction,
+        visionRange: properties.vision_range,
         name: properties.name,
         nameVisible: properties.name_visible,
         isInvisible: properties.is_invisible,

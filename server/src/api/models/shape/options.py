@@ -35,6 +35,11 @@ class ShapeSetIntegerValue(TypeIdModel):
     value: int
 
 
+class ShapeSetNumberValue(TypeIdModel):
+    shape: str = Field(json_schema_extra={"typeId": "GlobalId"})
+    value: float
+
+
 class Permissions(BaseModel):
     enabled: list[str]
     request: list[str]

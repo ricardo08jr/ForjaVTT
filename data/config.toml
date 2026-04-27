@@ -3,7 +3,7 @@ save_file = "data/planar.sqlite"
 allow_signups = true
 enable_export = true
 admin_user = "ricardo"
-client_url = "http://localhost:8000"
+
 
 [assets]
 max_single_asset_size_in_bytes = 0

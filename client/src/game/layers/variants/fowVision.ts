@@ -9,6 +9,7 @@ import { gameState } from "../../systems/game/state";
 import { locationSettingsSystem } from "../../systems/settings/location";
 import { locationSettingsState } from "../../systems/settings/location/state";
 import { playerSettingsState } from "../../systems/settings/players/state";
+import { getProperties } from "../../systems/properties/state";
 import { visionState } from "../../vision/state";
 
 import { FowLayer } from "./fow";
@@ -31,12 +32,8 @@ export class FowVisionLayer extends FowLayer {
             // This was done in commit be1e65cff1e7369375fe11cfa1643fab1d11beab.
             if (!gameState.raw.isDm) super.draw(false);
 
-            const visionMin = g2lr(locationSettingsState.raw.visionMinRange.value);
-            let visionMax = g2lr(locationSettingsState.raw.visionMaxRange.value);
-            // The radial-gradient doesn't handle equal radii properly.
-            if (visionMax === visionMin) {
-                visionMax += 0.01;
-            }
+            const visionMinGlobal = g2lr(locationSettingsState.raw.visionMinRange.value);
+            const visionMaxGlobal = g2lr(locationSettingsState.raw.visionMaxRange.value);
 
             visionState.behindVisionLightPaths.clear();
 
@@ -45,6 +42,20 @@ export class FowVisionLayer extends FowLayer {
                 if (token === undefined || token.floorId !== this.floor) continue;
                 if (token.layerName === LayerName.Dm && gameState.raw.isFakePlayer) continue;
 
+                const props = getProperties(token.id)!;
+                let vMax = visionMaxGlobal;
+                let vMin = visionMinGlobal;
+                if (props.visionRange !== null) {
+                    vMax = g2lr(props.visionRange);
+                    const delta = visionMaxGlobal - visionMinGlobal;
+                    vMin = Math.max(0, vMax - delta);
+                }
+
+                // The radial-gradient doesn't handle equal radii properly.
+                if (vMax === vMin) {
+                    vMax += 0.01;
+                }
+
                 const center = token.center;
                 const lcenter = g2l(center);
 
@@ -52,10 +63,10 @@ export class FowVisionLayer extends FowLayer {
                 const gradient = this.ctx.createRadialGradient(
                     lcenter.x,
                     lcenter.y,
-                    visionMin,
+                    vMin,
                     lcenter.x,
                     lcenter.y,
-                    visionMax,
+                    vMax,
                 );
                 gradient.addColorStop(0, "rgba(0, 0, 0, 1)");
                 gradient.addColorStop(1, "rgba(0, 0, 0, 0)");

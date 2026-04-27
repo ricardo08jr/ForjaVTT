@@ -28,6 +28,7 @@ const DEFAULT_PROPERTIES: () => ShapeProperties = () => ({
     strokeColour: ["rgba(0, 0, 0, 0)"],
     blocksMovement: false,
     blocksVision: VisionBlock.No,
+    visionRange: null,
     showBadge: false,
     size: { x: 0, y: 0 },
     showCells: false,

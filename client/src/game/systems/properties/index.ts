@@ -23,6 +23,7 @@ import {
     sendShapeSetShowCells,
     sendShapeSetSize,
     sendShapeSetStrokeColour,
+    sendShapeSetVisionRange,
 } from "../../api/emits/shape/options";
 import { getGlobalId, getShape } from "../../id";
 import type { ShapeSize } from "../../interfaces/shape";
@@ -240,6 +241,25 @@ class PropertiesSystem implements ShapeSystem<Partial<ShapeProperties>> {
         const alteredVision = checkVisionSources(id, blocksVision !== VisionBlock.No, recalculate);
         if (alteredVision && recalculate) getShape(id)?.invalidate(false);
         doorSystem.checkCursorState(id);
+    }
+
+    setVisionRange(id: LocalId, range: number | null, syncTo: Sync, recalculate = true): void {
+        const shape = mutable.data.get(id);
+        if (shape === undefined) {
+            return console.error("[Properties.setVisionRange] Unknown local shape.");
+        }
+
+        shape.visionRange = range;
+
+        if (syncTo.server) {
+            const shape = getGlobalId(id);
+            if (shape) sendShapeSetVisionRange({ shape, value: range ?? -1 });
+        }
+
+        const d = $.data.get(id);
+        if (d) d.visionRange = range;
+
+        if (recalculate) getShape(id)?.invalidate(false);
     }
 
     setShowBadge(id: LocalId, showBadge: boolean, syncTo: Sync): void {

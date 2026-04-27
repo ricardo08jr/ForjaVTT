@@ -1,6 +1,7 @@
 import type {
     ShapeSetBooleanValue,
     ShapeSetIntegerValue,
+    ShapeSetNumberValue,
     ShapeSetOptionalStringValue,
     ShapeSetStringValue,
     ShapeSetSizeValue,
@@ -12,6 +13,7 @@ export const sendShapeSetDefeated = wrapSocket<ShapeSetBooleanValue>("Shape.Opti
 export const sendShapeSetLocked = wrapSocket<ShapeSetBooleanValue>("Shape.Options.Locked.Set");
 export const sendShapeSetBlocksMovement = wrapSocket<ShapeSetBooleanValue>("Shape.Options.MovementBlock.Set");
 export const sendShapeSetBlocksVision = wrapSocket<ShapeSetIntegerValue>("Shape.Options.VisionBlock.Set");
+export const sendShapeSetVisionRange = wrapSocket<ShapeSetNumberValue>("Shape.Options.VisionRange.Set");
 export const sendShapeSetNameVisible = wrapSocket<ShapeSetBooleanValue>("Shape.Options.NameVisible.Set");
 export const sendShapeSetShowBadge = wrapSocket<ShapeSetBooleanValue>("Shape.Options.ShowBadge.Set");
 

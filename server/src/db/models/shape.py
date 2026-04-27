@@ -84,6 +84,7 @@ class Shape(BaseDbModel):
         Character | None,
         ForeignKeyField(Character, backref="shapes", null=True, default=None, on_delete="SET NULL"),
     )
+    vision_range = cast(float | None, FloatField(null=True, default=None))
     odd_hex_orientation = cast(bool, BooleanField(default=False))
     size_x = cast(int, IntegerField(default=0))
     size_y = cast(int, IntegerField(default=0))
