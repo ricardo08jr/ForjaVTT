@@ -4,7 +4,6 @@ allow_signups = true
 enable_export = true
 admin_user = "ricardo"
 
-
 [assets]
 max_single_asset_size_in_bytes = 0
 max_total_asset_size_in_bytes = 0

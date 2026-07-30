@@ -19,6 +19,8 @@ services:
     image: ngrok/ngrok:latest
     container_name: forjavtt-ngrok
     restart: unless-stopped
+    ports:
+      - "4040:4040"
     environment:
       - NGROK_AUTHTOKEN=2aYbMngQc8bmzlUL7hbubwaNnKz_5Bx8tf5YjKwZuPPssVLqT
     command:

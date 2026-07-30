@@ -43,39 +43,30 @@ export class FowVisionLayer extends FowLayer {
                 if (token.layerName === LayerName.Dm && gameState.raw.isFakePlayer) continue;
 
                 const props = getProperties(token.id)!;
-                let vMax = visionMaxGlobal;
-                let vMin = visionMinGlobal;
-                if (props.visionRange !== null) {
-                    vMax = g2lr(props.visionRange);
-                    const delta = visionMaxGlobal - visionMinGlobal;
-                    vMin = Math.max(0, vMax - delta);
-                }
-
-                // The radial-gradient doesn't handle equal radii properly.
-                if (vMax === vMin) {
-                    vMax += 0.01;
-                }
-
                 const center = token.center;
                 const lcenter = g2l(center);
+                
+                const vMax = props.visionRange !== null ? g2lr(props.visionRange) : visionMaxGlobal;
+                
+                const gradient = this.ctx.createRadialGradient(lcenter.x, lcenter.y, 0, lcenter.x, lcenter.y, vMax);
 
-                // Add a gradient vision dropoff
-                const gradient = this.ctx.createRadialGradient(
-                    lcenter.x,
-                    lcenter.y,
-                    vMin,
-                    lcenter.x,
-                    lcenter.y,
-                    vMax,
-                );
-                gradient.addColorStop(0, "rgba(0, 0, 0, 1)");
-                gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+                // Universal Aggressive Cubic Haze
+                gradient.addColorStop(0, "rgba(0, 0, 0, 1)"); 
+                gradient.addColorStop(0.05, "rgba(0, 0, 0, 1)"); // Only 5% is perfectly clear
+                
+                // 10 stops with cubic drop (Math.pow 3)
+                for (let i = 1; i <= 10; i++) {
+                    const stop = 0.05 + (i * 0.095);
+                    const visibility = Math.pow(1 - (i / 10), 3); // 1.0 -> 0.72 -> 0.34 -> 0.08 -> 0.0
+                    gradient.addColorStop(Math.min(1, stop), `rgba(0, 0, 0, ${visibility.toFixed(2)})`);
+                }
+                
+                gradient.addColorStop(1, "rgba(0, 0, 0, 0)"); 
                 this.ctx.fillStyle = gradient;
 
                 this.ctx.fill(token.visionPolygon);
 
                 // Behind vision mode rendering
-                // Find all behind-shapes that exist in both the token and the light source's vision polygon.
                 for (const lightIds of visionState.getVisionSourcesInView(this.floor)) {
                     const lightShape = getShape(lightIds.shape);
                     if (lightShape === undefined) continue;
